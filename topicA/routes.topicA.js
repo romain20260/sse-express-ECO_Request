@@ -6,12 +6,12 @@ let topicA = new TopicA();
 
 route.get("/subscribe", (req,res)=> {
 
-  topicA.streaming(req,res,10000)  
+  topicA.streaming(req,res,5000)  
 }
 );
 
 route.post("/publish",(req,res)=>{ 
-
+console.log(req.body.message);
     topicA.push(req.body.message)
     res.end()
 })

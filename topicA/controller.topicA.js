@@ -6,26 +6,13 @@ class TopicA{
         this.manager = new SubPub()
 
     }
-    //route streaming open a stream connection with timeout set by timeOut var  
+ 
     streaming(req,res,timeOut){
        
-        //setup header we have to mime type event-stream to push event strteam data 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Access-Control-Allow-Origin', '*');
-        //we call the core systeme of subpub and pass the arg res 
-        //it we res.write our response for sending
-    this.manager.suscribe(res,timeOut); 
-    //     //set up the timeOut with the arg we pass 
-    //     //it we close the connection automaticelly
-    //     //he optionnelle we can let the connection open 
 
-        //this is our close gate when client disconnect his sse or close by browser
-    
-    res.on('close', () => {
-            this.manager.onClose(res)
-    })
-
-
+    this.manager.suscribe(req,res,timeOut);
     
     }
     //this is push methode to call pubsub core publish methode with data to push 
