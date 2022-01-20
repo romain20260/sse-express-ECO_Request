@@ -6,7 +6,7 @@ let topicA = new TopicA();
 
 route.get("/subscribe", (req,res)=> {
 
-  topicA.streaming(req,res,5000000)  
+  topicA.streaming(req,res,10000)  
 }
 );
 

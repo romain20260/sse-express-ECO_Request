@@ -1,15 +1,13 @@
 const Events = require('events');
+const res = require('express/lib/response');
 
 //cannot use event to emit from pubblish method a noise and trigger un suscribe 
-// a callback to res.write the message cause 
+//a callback to res.write the message cause 
 class pubSubManager{
     constructor(){
-       
-        this.LastMessage = {id:"void",message:"no publish YET"};
         this.newMessage;
         this.ev = new Events()
-        this.lol;
- 
+        this.eventName;
     }
 
     publish(message){
@@ -18,31 +16,50 @@ class pubSubManager{
                 id: `${Date.now()}`,
                 message: message
             }
-            console.log("push : "+ Date.now());
             this.newMessage = message
-        
+            this.eventName = this.newMessage.id.toString();
+            console.log("hey push ....");
+            // setTimeout(()=>{
+            //     console.log("request push : "+ Date.now());
+            //     this.ev.emit(this.eventName)
+            // },200)
     }
-    suscribe(res){
+    suscribe(res,timeOut){
+    
+        res.on("close",()=>{
+            this.ev.removeAllListeners("message")
+            console.log(this.ev._event);
+        })
+        //TODO generator yield try 
+            setInterval(()=>{
+            console.log("request :"+this.eventName);
+                if(this.eventName !== undefined)
+                {
+                this.ev.on(this.eventName,()=>{
+                console.log("trigger");
+                res.write(`data: ${this.newMessage.id},${this.newMessage.message} \n\n`)
+                this.ev.removeAllListeners(this.eventName)
+                this.eventName = undefined;
+                console.log(this.ev);
+                     })
+                }
+            },300)
+            
+        
+        
 
-       setInterval(()=>{
-           if(!this.newMessage){
-               this.newMessage = this.LastMessage;
-           }
-           else if(this.newMessage && this.newMessage != this.LastMessage)
-           {
-               res.write(`data: ${this.newMessage.id},${this.newMessage.message} \n\n`)
-               setTimeout(()=>{
-                  this.LastMessage = this.newMessage 
-               },1000)
-               
-           }
-           
-        },0)
+    
 
+
+ 
+
+
+ 
+        
     }
     onClose(res){
             console.log("conncetion closed");
-            console.log(this.LastMessage,this.newMessage);
+            console.log(this.ev);
             res.end();
 
     }
