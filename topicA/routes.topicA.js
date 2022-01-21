@@ -4,17 +4,8 @@ let TopicA = require('./controller.topicA');
 
 let topicA = new TopicA();
 
-route.get("/subscribe", (req,res)=> {
+route.get("/subscribe", (req,res)=>topicA.streaming(req,res,3600000));
 
-  topicA.streaming(req,res,5000000)  
-}
-);
-
-route.post("/publish",(req,res)=>{ 
-
-    topicA.push(req.body.message)
-    res.end()
-})
-
+route.post("/publish",(req,res)=>topicA.push(req.body,res));
 
 module.exports = route;
