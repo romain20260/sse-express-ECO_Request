@@ -12,8 +12,7 @@ streaming(req,res,timeOut){
     }
     //this is push methode to call pubsub core publish methode with data to push 
 push(data,res){
-        this.manager.publish(data)
-        res.end()
+        this.manager.publish(data,res)
     }
 }
 module.exports = TopicA;

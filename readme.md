@@ -29,7 +29,7 @@ id : [integer] default: timestamp
 
 event : [string] default: message
 
-data: [any] default: void
+data: [any] default: null
 
 }<br>
 ![postman!](assetsReadMe\sseSendEvent.PNG)
@@ -40,7 +40,7 @@ PRO: let the server put a timestamp to identifie the event<br>
 
 <ul> <h3>routes suscriber</h3>
 <li> GET [channelName]\subscribe <br> to subscribe all messages of all event emitted on this channel "topic"
-<li> GET [channelName]\subscribe\[eventName] <br> to subscribe all messages to a specifie event Name 
+<li> GET [channelName]\subscribe\[eventName] <br> to subscribe all messages to a specifie event Name if eventname is egal to all you suscribe to all events
 </ul>
 <ul><h3>route pusher</h3>
 <li> POST [channelName]\publish
@@ -103,7 +103,7 @@ npm install --save eventsource
         let topicA = new TopicA();
 
         route.get("/subscribe", (req,res)=>topicA.streaming(req,res,3600000));
-
+        route.get("/subscribe/data", (req,res)=>topicA.streaming(req,res,3600000));
         route.post("/publish",(req,res)=>topicA.push(req.body,res));
 
         module.exports = route;
@@ -127,8 +127,7 @@ npm install --save eventsource
         }
         //this is push methode to call pubsub core publish methode with data to push 
     push(data,res){
-            this.manager.publish(data)
-            res.end()
+            this.manager.publish(data,res)
         }
     }
     module.exports = TopicA;

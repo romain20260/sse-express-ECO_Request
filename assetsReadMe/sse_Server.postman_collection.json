@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "1a38e5bf-28d0-470c-9d67-f959bde63ada",
+		"name": "sse_Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "try to publish on topicA",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"message\": \" salytutuut \"\r\n  \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/topicA/publish",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"topicA",
+						"publish"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
